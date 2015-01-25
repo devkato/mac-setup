@@ -1,0 +1,202 @@
+# ======================================================================
+#
+# additional configurations
+#
+# ======================================================================
+
+# ------------------------------------------------------------
+# Environment
+# ------------------------------------------------------------
+export PATH=/usr/local/bin:$PATH
+export LANG=en_US.UTF-8
+export EDITOR=/usr/bin/vim
+export BUNDLER_EDITOR=/usr/bin/vim
+export HOMEBREW_EDITOR=$EDITOR
+
+
+# ----------------------------------------------------------------------
+# rbenv
+# ----------------------------------------------------------------------
+eval "$(rbenv init -)";
+
+
+# ----------------------------------------------------------------------
+# vi/vim
+# ----------------------------------------------------------------------
+alias vi='env LANG=ja_JP.UTF_8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+alias vim='env LANG=ja_JP.UTF_8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+alias mvim='env LANG=ja_JP.UTF_8 /Applications/MacVim.app/Contents/MacOS/MacVim "$@"'
+
+
+# ----------------------------------------------------------------------
+# Android
+# ----------------------------------------------------------------------
+export ANDROID_VERSION=23.0.2
+export ANDROID_HOME=/usr/local/Cellar/android-sdk/${ANDROID_VERSION}
+export PATH=${PATH}:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools
+export ANDROID_SDK_ROOT=$ANDROID_HOME
+
+
+# ----------------------------------------------------------------------
+# JDK
+# ----------------------------------------------------------------------
+export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+
+# ----------------------------------------------------------------------
+# XCode
+# ----------------------------------------------------------------------
+export PATH=${PATH}:/Applications/Xcode.app/Contents/Developer/usr/bin
+
+
+# ----------------------------------------------------------------------
+# Postgres
+# ----------------------------------------------------------------------
+export PATH=/Library/PostgreSQL/9.1/bin:${PATH}
+export PGDATA=/usr/local/var/postgres
+ulimit -n 8192
+
+
+# ----------------------------------------------------------------------
+# node.js
+# ----------------------------------------------------------------------
+export PATH=$HOME/.nodenv/bin:$PATH
+eval "(nodenv init -)"
+
+
+# ----------------------------------------------------------------------
+# maven
+# ----------------------------------------------------------------------
+# export M2=$M2_HOME/bin
+# export M2_REPO=$HOME/.m2/repository
+
+
+# ------------------------------------------------------------
+# AWS
+# ------------------------------------------------------------
+export AWS_ACCESS_KEY=YOUR_ACCESS_KEY
+export AWS_SECRET_KEY=YOUR_SECRET_KEY
+
+
+# ------------------------------------------------------------
+# tmux
+# ------------------------------------------------------------
+export DISABLE_AUTO_TITLE="true"
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
+
+
+# ------------------------------------------------------------
+# DeployGate
+# ------------------------------------------------------------
+export DEPLOYGATE_API_TOKEN=YOUR_API_TOKEN
+export DEPLOYGATE_USER_NAME=YOUR_USER_NAME
+
+
+# ------------------------------------------------------------
+# docker
+# ------------------------------------------------------------
+export DOCKER_HOST=tcp://127.0.0.1:2375
+
+
+# ------------------------------------------------------------
+# pkgconfig
+# ------------------------------------------------------------
+# export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/opt/X11/lib/pkgconfig
+
+
+# ------------------------------------------------------------
+# Ansible
+# ------------------------------------------------------------
+# export ANSIBLE_HOSTS=path-to-ansible_target
+
+
+# ------------------------------------------------------------
+# Guard
+# ------------------------------------------------------------
+export GUARD_GEM_SILENCE_DEPRECATIONS=1
+
+
+# ------------------------------------------------------------
+# Chef Development Kit
+# ------------------------------------------------------------
+export PATH=/opt/chefdk/bin:${PATH}
+
+
+# ----------------------------------------------------------------------
+# switch github accounts
+# ----------------------------------------------------------------------
+function switch_github() {
+
+  # check parameters
+  if [ $# -lt 1 ]; then
+    echo ""
+    echo "  Usage: switch_github [aaa|bbb]"
+    echo ""
+
+    return
+  fi
+
+  echo "swtich account to ${1}"
+
+  # remote all cached private keys
+  ssh-add -D
+
+  case ${1} in
+    "aaa" ) ssh-add path-to-private-key-for-aaa ;;
+    "bbb" ) ssh-add path-to-private-key-for-bbb ;;
+  esac
+}
+
+
+# ------------------------------------------------------------
+# aliases
+# ------------------------------------------------------------
+alias dnsflush="sudo dscacheutil -flushcache"
+alias vmnet_restart='/Library/Application Support/VMware Fusion/boot.sh --restart'
+alias be='bundle exec'
+
+# enable/disable Spotlight
+alias spotlight_on='sudo mdutil -a -i on'
+alias spotlight_off='sudo mdutil -a -i off'
+
+# port forwarding template
+# alias tunnel_to_server='autossh -M 0 -i path-to-private-key username@hostname -L local-port/stool-server-host/remote-port -C -g'
+
+# Erlang
+alias download_rebar="wget http://cloud.github.com/downloads/basho/rebar/rebar && chmod u+x rebar"
+
+# reset database
+alias reset_db='./bin/rake db:drop db:create db:migrate db:seed --trace'
+alias reset_test_db='./bin/rake db:drop db:create db:migrate db:seed RAILS_ENV=test --trace'
+alias heroku_reset_db='heroku run rake db:schema:load && heroku run rake db:migrate && heroku run rake db:seed'
+
+# create public key from private key
+alias regen_pubkey='ssh-keygen -y -f ${1}'
+
+# Capistrano
+alias cpdeploy='./bin/cap production deploy'
+alias cpstart='./bin/cap production deploy:start'
+alias cpdstop='./bin/cap production deploy:stop'
+alias cprestart='./bin/cap production deploy:restart'
+
+# Git
+alias gs='git status '
+alias ga='git add '
+alias gb='git branch '
+alias gc='git commit -a'
+alias gd='git diff '
+alias go='git checkout '
+alias gp='git pull '
+
+# simple http server
+alias simplehttp="python -m SimpleHTTPServer $1"
+
+# docker
+alias docker-clean-container='docker rm -f `docker ps --no-trunc -a -q`'
+alias docker-clean-images='docker rmi -f `docker images --no-trunc -a -q`'
+
+# xcode
+alias clean_xcode_deriveddata="rm -rf ${HOME}/Library/Developer/Xcode/DerivedData"
+
